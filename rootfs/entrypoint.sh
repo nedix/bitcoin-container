@@ -28,7 +28,12 @@
 mkdir -p \
     "$BLOCKSDIR" \
     "$DATADIR" \
-    "$WALLETDIR"
+    "$WALLETDIR" \
+    "/var/log/bitcoin"
+
+chown nobody:nogroup \
+    "/var/log/bitcoin"
+
 
 #if \
 #    grep -q "-reindex" "$LOG_FILE" \

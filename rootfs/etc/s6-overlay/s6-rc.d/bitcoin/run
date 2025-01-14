@@ -92,13 +92,11 @@ if [ ! -z "$WHITELIST" ]; then
     ARGS="$ARGS\n--whitelist=${WHITELIST}"
 fi
 
-if \
-    grep -q "-reindex" "$LOG_FILE" \
-    || grep -q "Errors in block header" "$LOG_FILE" \
+if echo "$(cat /var/log/bitcoin/current /var/log/bitcoin/*.s)" | grep -q \
+    -e "-reindex" \
+    -e "Errors in block header" \
 ; then
     ARGS="$ARGS --reindex"
 fi
-
-echo $ARGS
 
 exec /usr/local/bin/bitcoind $ARGS
