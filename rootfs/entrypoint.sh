@@ -54,6 +54,7 @@ mkdir -p \
     mkdir -p /run/bitcoin/environment
 
     echo "$BLOCKSDIR"       > /run/bitcoin/environment/BLOCKSDIR
+    echo "$CONF"            > /run/bitcoin/environment/CONF
     echo "$CHAIN"           > /run/bitcoin/environment/CHAIN
     echo "$CONNECT"         > /run/bitcoin/environment/CONNECT
     echo "$DATADIR"         > /run/bitcoin/environment/DATADIR

@@ -99,4 +99,6 @@ if \
     ARGS="$ARGS --reindex"
 fi
 
-exec /usr/local/bin/bitcoind
+echo $ARGS
+
+exec /usr/local/bin/bitcoind $ARGS
