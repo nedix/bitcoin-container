@@ -1,0 +1,102 @@
+#!/usr/bin/env sh
+
+: ${BLOCKSDIR}
+: ${CHAIN}
+: ${CONF}
+: ${CONNECT}
+: ${DATADIR}
+: ${DBCACHE}
+: ${DISABLEWALLET}
+: ${DISCOVER}
+: ${DNSSEED}
+: ${LISTEN}
+: ${MAXCONNECTIONS}
+: ${PRUNE}
+: ${RPCALLOWIP}
+: ${RPCPASSWORD}
+: ${RPCTHREADS}
+: ${RPCUSER}
+: ${TXINDEX}
+: ${UPNP}
+: ${WALLETBROADCAST}
+: ${WALLETDIR}
+: ${WHITELIST}
+: ${ZMQPUBRAWBLOCK}
+: ${ZMQPUBRAWTX}
+
+ARGS="$ARGS \
+    --blocksdir=${BLOCKSDIR} \
+    --chain=${CHAIN} \
+    --conf=${CONF} \
+    --datadir=${DATADIR} \
+    --printtoconsole=${PRINTTOCONSOLE} \
+    --rpcallowip=${RPCALLOWIP} \
+    --walletdir=${WALLETDIR} \
+    --zmqpubrawblock=${ZMQPUBRAWBLOCK} \
+    --zmqpubrawtx=${ZMQPUBRAWTX} \
+"
+
+if [ ! -z "$CONNECT" ]; then
+    ARGS="$ARGS\n--connect=${CONNECT}"
+fi
+
+if [ ! -z "$DISABLEWALLET" ]; then
+    ARGS="$ARGS\n--disablewallet=${DISABLEWALLET}"
+fi
+
+if [ ! -z "$DISCOVER" ]; then
+    ARGS="$ARGS\n--discover=${DISCOVER}"
+fi
+
+if [ ! -z "$DNSSEED" ]; then
+    ARGS="$ARGS\n--dnsseed=${DNSSEED}"
+fi
+
+if [ ! -z "$LISTEN" ]; then
+    ARGS="$ARGS\n--listen=${LISTEN}"
+fi
+
+if [ ! -z "$MAXCONNECTIONS" ]; then
+    ARGS="$ARGS\n--maxconnections=${MAXCONNECTIONS}"
+fi
+
+if [ ! -z "$PRUNE" ]; then
+    ARGS="$ARGS\n--prune=${PRUNE}"
+fi
+
+if [ ! -z "$RPCPASSWORD" ]; then
+    ARGS="$ARGS\n--rpcpassword=${RPCPASSWORD}"
+fi
+
+if [ ! -z "$RPCTHREADS" ]; then
+    ARGS="$ARGS\n--rpcthreads=${RPCTHREADS}"
+fi
+
+if [ ! -z "$RPCUSER" ]; then
+    ARGS="$ARGS\n--rpcuser=${RPCUSER}"
+fi
+
+if [ ! -z "$TXINDEX" ]; then
+    ARGS="$ARGS\n--txindex=${TXINDEX}"
+fi
+
+if [ ! -z "$UPNP" ]; then
+    ARGS="$ARGS\n--upnp=${UPNP}"
+fi
+
+if [ ! -z "$WALLETBROADCAST" ]; then
+    ARGS="$ARGS\n--walletbroadcast=${WALLETBROADCAST}"
+fi
+
+if [ ! -z "$WHITELIST" ]; then
+    ARGS="$ARGS\n--whitelist=${WHITELIST}"
+fi
+
+if \
+    grep -q "-reindex" "$LOG_FILE" \
+    || grep -q "Errors in block header" "$LOG_FILE" \
+; then
+    ARGS="$ARGS --reindex"
+fi
+
+exec /usr/local/bin/bitcoind

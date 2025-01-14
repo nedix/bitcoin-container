@@ -1,8 +1,29 @@
 ARG ALPINE_VERSION=3.21
 ARG BITCOIN_VERSION=28.1
 ARG QUIX_SIGS_VERSION=7efcd43ec0e9ace699a1ed3f0d113d1a486757de
+ARG S6_OVERLAY_VERSION=3.2.0.0
+ARG STARTUP_TIMEOUT=30
 
-FROM alpine:${ALPINE_VERSION} AS bitcoin
+FROM alpine:${ALPINE_VERSION} AS base
+
+ARG S6_OVERLAY_VERSION
+
+RUN apk add --virtual .build-deps \
+        xz \
+    && case "$(uname -m)" in \
+        aarch64|arm*) \
+            CPU_ARCHITECTURE="aarch64" \
+        ;; x86_64) \
+            CPU_ARCHITECTURE="x86_64" \
+        ;; *) echo "Unsupported architecture: $(uname -m)"; exit 1; ;; \
+    esac \
+    && wget -qO- "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" \
+    | tar -xpJf- -C / \
+    && wget -qO- "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${CPU_ARCHITECTURE}.tar.xz" \
+    | tar -xpJf- -C / \
+    && apk del .build-deps
+
+FROM base AS bitcoin
 
 ARG BITCOIN_VERSION
 ARG QUIX_SIGS_VERSION
@@ -58,7 +79,7 @@ RUN ./autogen.sh \
     && strip -v /opt/bitcoin/bin/bitcoin* \
     && sha256sum /opt/bitcoin/bin/bitcoin*
 
-FROM alpine:${ALPINE_VERSION}
+FROM base
 
 RUN apk add --no-cache \
         libevent \
@@ -70,6 +91,9 @@ RUN apk add --no-cache \
 COPY --link --from=bitcoin /opt/bitcoin/bin/bitcoin*  /usr/local/bin/
 
 COPY /rootfs/ /
+
+ARG STARTUP_TIMEOUT
+ENV STARTUP_TIMEOUT="$STARTUP_TIMEOUT"
 
 ENTRYPOINT ["/entrypoint.sh"]
 
