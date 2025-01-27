@@ -34,21 +34,6 @@ mkdir -p \
 chown nobody:nogroup \
     "/var/log/bitcoin"
 
-
-#if \
-#    grep -q "-reindex" "$LOG_FILE" \
-#    || grep -q "Errors in block header" "$LOG_FILE" \
-#; then
-#    ARGS="$ARGS --reindex"
-#fi
-#
-#test -p /tmp/fifo || mkfifo /tmp/fifo
-#
-#grep ".*" --line-buffered < /tmp/fifo | /opt/bitcoin/rotating-logger.sh "$LOG_FILE" &
-#
-#exec /usr/local/bin/bitcoind $ARGS > /tmp/fifo 2>&1
-
-
 # -------------------------------------------------------------------------------
 #    Bootstrap bitcoin services
 # -------------------------------------------------------------------------------
@@ -89,5 +74,5 @@ chown nobody:nogroup \
 # -------------------------------------------------------------------------------
 exec env -i \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME="$(( $STARTUP_TIMEOUT * 1000 ))" \
-    S6_STAGE2_HOOK=/usr/sbin/s6-stage2-hook \
+    S6_STAGE2_HOOK="/usr/sbin/s6-stage2-hook" \
     /init
