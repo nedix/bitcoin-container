@@ -11,15 +11,17 @@ ARG S6_OVERLAY_VERSION
 RUN apk add --virtual .build-deps \
         xz \
     && case "$(uname -m)" in \
-        aarch64|arm*) \
-            CPU_ARCHITECTURE="aarch64" \
+        aarch64) \
+            S6_OVERLAY_ARCHITECTURE="aarch64" \
+        ;; arm*) \
+            S6_OVERLAY_ARCHITECTURE="arm" \
         ;; x86_64) \
-            CPU_ARCHITECTURE="x86_64" \
+            S6_OVERLAY_ARCHITECTURE="x86_64" \
         ;; *) echo "Unsupported architecture: $(uname -m)"; exit 1; ;; \
     esac \
     && wget -qO- "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" \
     | tar -xpJf- -C / \
-    && wget -qO- "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${CPU_ARCHITECTURE}.tar.xz" \
+    && wget -qO- "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCHITECTURE}.tar.xz" \
     | tar -xpJf- -C / \
     && apk del .build-deps
 
