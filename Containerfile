@@ -1,5 +1,5 @@
 ARG ALPINE_VERSION=3.21
-ARG BITCOIN_VERSION=28.1
+ARG BITCOIN_VERSION=29.0
 ARG QUIX_SIGS_VERSION=58f2da575886487333f5f33a6847873ec74d0a17
 ARG S6_OVERLAY_VERSION=3.2.0.0
 ARG STARTUP_TIMEOUT=30
@@ -31,11 +31,10 @@ ARG BITCOIN_VERSION
 ARG QUIX_SIGS_VERSION
 
 RUN apk add \
-        autoconf \
-        automake \
         boost-dev \
         build-base \
         chrpath \
+        cmake \
         file \
         git \
         gnupg \
@@ -61,25 +60,26 @@ RUN git init "$PWD" \
     && git checkout "v${BITCOIN_VERSION}" \
     && git verify-tag "v${BITCOIN_VERSION}"
 
-RUN ./autogen.sh \
-    && ./configure \
-        CXXFLAGS="-O2" \
-        --prefix="/opt/bitcoin" \
-        --disable-ccache \
-        --disable-man \
-        --disable-shared \
-        --disable-tests \
-        --enable-reduce-exports \
-        --enable-static \
-        --with-daemon \
-        --with-sqlite=yes \
-        --with-utils \
-        --without-gui \
-        --without-libs \
-    && make -j$(( $(nproc) + 1 )) \
-    && make install \
-    && strip -v /opt/bitcoin/bin/bitcoin* \
-    && sha256sum /opt/bitcoin/bin/bitcoin*
+RUN export CFLAGS="-O2 -g1" CPPFLAGS="-O2 -g1" CXXFLAGS="-O2 -g1" \
+    && cmake \
+        -B output \
+        -DBUILD_CLI="ON" \
+        -DBUILD_DAEMON="ON" \
+        -DBUILD_GUI="OFF" \
+        -DBUILD_SHARED_LIBS="OFF" \
+        -DBUILD_TESTS="OFF" \
+        -DBUILD_TX="ON" \
+        -DBUILD_UTIL="ON" \
+        -DBUILD_WALLET_TOOL="ON" \
+        -DINSTALL_MAN="OFF" \
+        -DREDUCE_EXPORTS="ON" \
+        -DWITH_CCACHE="OFF" \
+        -DWITH_SQLITE="ON" \
+    && cmake \
+        --build output \
+        -j $(( $(nproc) + 1 )) \
+    && strip -v /build/bitcoin/output/bin/bitcoin* \
+    && sha256sum /build/bitcoin/output/bin/bitcoin*
 
 FROM base
 
@@ -90,7 +90,7 @@ RUN apk add --no-cache \
         libzmq \
         sqlite-libs
 
-COPY --link --from=bitcoin /opt/bitcoin/bin/bitcoin*  /usr/local/bin/
+COPY --link --from=bitcoin /build/bitcoin/output/bin/bitcoin*  /usr/local/bin/
 
 COPY /rootfs/ /
 
