@@ -22,8 +22,6 @@
 : ${WALLETBROADCAST}
 : ${WALLETDIR:="/var/bitcoin/wallets/"}
 : ${WHITELIST}
-: ${ZMQPUBRAWBLOCK:="tcp://0.0.0.0:28332"}
-: ${ZMQPUBRAWTX:="tcp://0.0.0.0:28333"}
 
 mkdir -p \
     "$BLOCKSDIR" \
@@ -65,8 +63,6 @@ chown nobody:nogroup \
     echo "$WALLETBROADCAST" > /run/bitcoin/environment/WALLETBROADCAST
     echo "$WALLETDIR"       > /run/bitcoin/environment/WALLETDIR
     echo "$WHITELIST"       > /run/bitcoin/environment/WHITELIST
-    echo "$ZMQPUBRAWBLOCK"  > /run/bitcoin/environment/ZMQPUBRAWBLOCK
-    echo "$ZMQPUBRAWTX"     > /run/bitcoin/environment/ZMQPUBRAWTX
 }
 
 # -------------------------------------------------------------------------------
