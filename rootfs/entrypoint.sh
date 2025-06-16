@@ -16,7 +16,6 @@
 : ${RPCPASSWORD}
 : ${RPCTHREADS}
 : ${RPCUSER}
-: ${STARTUP_TIMEOUT}
 : ${TXINDEX}
 : ${UPNP}
 : ${WALLETBROADCAST}
@@ -57,7 +56,6 @@ chown nobody:nogroup \
     echo "$RPCPASSWORD"     > /run/bitcoin/environment/RPCPASSWORD
     echo "$RPCTHREADS"      > /run/bitcoin/environment/RPCTHREADS
     echo "$RPCUSER"         > /run/bitcoin/environment/RPCUSER
-    echo "$STARTUP_TIMEOUT" > /run/bitcoin/environment/STARTUP_TIMEOUT
     echo "$TXINDEX"         > /run/bitcoin/environment/TXINDEX
     echo "$UPNP"            > /run/bitcoin/environment/UPNP
     echo "$WALLETBROADCAST" > /run/bitcoin/environment/WALLETBROADCAST
@@ -69,6 +67,5 @@ chown nobody:nogroup \
 #    Liftoff!
 # -------------------------------------------------------------------------------
 exec env -i \
-    S6_CMD_WAIT_FOR_SERVICES_MAXTIME="$(( $STARTUP_TIMEOUT * 1000 ))" \
-    S6_STAGE2_HOOK="/usr/sbin/s6-stage2-hook" \
+    S6_STAGE2_HOOK="/usr/bin/s6-stage2-hook" \
     /init

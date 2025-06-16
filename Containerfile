@@ -2,7 +2,6 @@ ARG ALPINE_VERSION=3.22
 ARG BITCOIN_VERSION=29.0
 ARG QUIX_SIGS_VERSION=310f05d182c1bcaa0a137bf021130d276ea308d4
 ARG S6_OVERLAY_VERSION=3.2.0.0
-ARG STARTUP_TIMEOUT=30
 
 FROM alpine:${ALPINE_VERSION} AS base
 
@@ -93,9 +92,6 @@ RUN apk add --no-cache \
 COPY --link --from=bitcoin /build/bitcoin/output/bin/bitcoin*  /usr/local/bin/
 
 COPY /rootfs/ /
-
-ARG STARTUP_TIMEOUT
-ENV STARTUP_TIMEOUT="$STARTUP_TIMEOUT"
 
 ENTRYPOINT ["/entrypoint.sh"]
 
