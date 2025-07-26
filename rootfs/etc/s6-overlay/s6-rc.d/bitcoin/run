@@ -94,7 +94,6 @@ fi
 
 if echo "$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)" | grep -q \
     -e "-reindex" \
-    -e "Errors in block header" \
 ; then
     ARGS="$ARGS --reindex"
 fi
