@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
+: ${BLOCKSDIR}
+
 if echo "$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)" | grep -q \
     -e "Errors in block header" \
 ; then
-    rm $(ls -Art /var/bitcoin/blocks/ | tail -n1)
+    rm $(find "$BLOCKSDIR" -mindepth 2 -name blk*.dat | sort | tail -n1)
 fi
