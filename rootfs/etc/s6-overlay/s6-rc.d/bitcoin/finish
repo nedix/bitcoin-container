@@ -4,6 +4,7 @@
 
 if echo "$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)" | grep -q \
     -e "Errors in block header" \
+    -e "Failed to read block" \
 ; then
     rm $(find "$BLOCKSDIR" -mindepth 2 -name blk*.dat | sort | tail -n1)
 fi
