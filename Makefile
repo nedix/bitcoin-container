@@ -1,6 +1,6 @@
 setup:
 	@test -e .env || cp .env.example .env
-	@docker build --progress=plain -f Containerfile -t bitcoin .
+	@docker build --progress=plain -f Containerfile -t bitcoin -t nedix/bitcoin:v0.57.38 .
 
 destroy:
 	-@docker rm -fv bitcoin
