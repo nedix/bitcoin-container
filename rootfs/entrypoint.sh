@@ -26,10 +26,10 @@ mkdir -p \
     "$BLOCKSDIR" \
     "$DATADIR" \
     "$WALLETDIR" \
-    "/var/log/bitcoin"
+    "/var/log/bitcoin/"
 
 chown nobody:nogroup \
-    "/var/log/bitcoin"
+    "/var/log/bitcoin/"
 
 # -------------------------------------------------------------------------------
 #    Bootstrap bitcoin services

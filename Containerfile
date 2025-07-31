@@ -107,5 +107,5 @@ EXPOSE 8333 18333 18444
 # ZMQ
 EXPOSE 28332 28333 28334 28335 28336
 
-VOLUME /var/bitcoin
-VOLUME /var/log/bitcoin
+VOLUME /var/bitcoin/
+VOLUME /var/log/bitcoin/

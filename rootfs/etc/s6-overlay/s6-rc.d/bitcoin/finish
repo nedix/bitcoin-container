@@ -2,9 +2,23 @@
 
 : ${BLOCKSDIR}
 
-if echo "$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)" | grep -q \
-    -e "Errors in block header" \
-    -e "Failed to read block" \
+LOG_LINES="$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)"
+
+if echo "$LOG_LINES" | grep -q \
+    -e "OpenBlockFile failed" \
 ; then
-    rm $(find "$BLOCKSDIR" -mindepth 2 -name blk*.dat | sort | tail -n1)
+    FILE_NUMBER=$(echo "$LOG_LINES" | grep "OpenBlockFile failed" | sed -nE 's|.*nFile=([0-9]*).*|\1|p' | head -n1)
+    echo -e "FILE_NUMBER=\"${FILE_NUMBER}\""
+
+    OLD_BLOCK_FILES=$(
+        ls blk*.dat rev*.dat 2>/dev/null \
+            | sed -E 's/^(blk|rev)([0-9]+)\.dat/\2 &/' \
+            | awk -v n="$FILE_NUMBER" '$1 >= n' \
+            | sort -n \
+            | cut -d' ' -f2- \
+    )
+
+    echo -e "OLD_BLOCK_FILES=\"${OLD_BLOCK_FILES}\""
+
+    rm $OLD_BLOCK_FILES
 fi
