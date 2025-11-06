@@ -93,6 +93,10 @@ COPY --link --from=bitcoin /build/bitcoin/output/bin/bitcoin*  /usr/local/bin/
 
 COPY /rootfs/ /
 
+ENV BLOCKSDIR="/mnt/storage/blocks/"
+ENV DATADIR="/mnt/storage/data/"
+ENV WALLETDIR="/mnt/storage/wallets/"
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 # REST
@@ -107,5 +111,5 @@ EXPOSE 8333 18333 18444
 # ZMQ
 EXPOSE 28332 28333 28334 28335 28336
 
-VOLUME /var/bitcoin
-VOLUME /var/log/bitcoin
+VOLUME /mnt/storage/
+VOLUME /var/log/bitcoin/

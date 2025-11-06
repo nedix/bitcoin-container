@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+: ${BLOCKSDIR}
+
+LOGLINES="$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)"
+
+if echo "$LOGLINES" | grep -q \
+    -e "OpenBlockFile failed" \
+; then
+    FAILEDFILE=$( \
+        echo "$LOGLINES" \
+            | grep "OpenBlockFile failed" \
+            | sed -nE 's/.*nFile=([0-9]*).*/\1/p' \
+            | head -n1 \
+    )
+
+    FAILEDFILES=$( \
+        ls /var/bitcoin/blocks/blk*.dat /var/bitcoin/blocks/rev*.dat 2>/dev/null \
+            | sed -E "s/.*(blk|rev)([0-9]+)\.dat/\2 &/" \
+            | awk -v n="$FAILEDFILE" '$1 >= n' \
+            | sort -n \
+            | cut -d' ' -f2- \
+    )
+
+    rm -rf $FAILEDFILES
+fi

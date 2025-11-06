@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+: ${BLOCKSDIR}
+: ${DATADIR}
+: ${WALLETDIR}
+
+mkdir -p \
+    "$BLOCKSDIR" \
+    "$DATADIR" \
+    "$WALLETDIR" \
+    /var/bitcoin/
+
+while [ -z "$BLOCKSDIRTARGET" ]; do
+    BLOCKSDIRTARGET="$(find ${BLOCKSDIR} -mindepth 0 -maxdepth 3 -type f | head -n1 | rev | cut -d '/' -f2- | rev)"
+
+    sleep 1
+done
+
+while [ -z "$DATADIRTARGET" ]; do
+    DATADIRTARGET="$(find ${DATADIR} -mindepth 0 -maxdepth 3 -type f | head -n1 | rev | cut -d '/' -f2- | rev)"
+
+    sleep 1
+done
+
+WALLETDIRTARGET="${WALLETDIR%/*}"
+
+(cd / && ln -s "${BLOCKSDIRTARGET}/" /var/bitcoin/blocks)
+(cd / && ln -s "${DATADIRTARGET}/" /var/bitcoin/data)
+(cd / && ln -s "${WALLETDIRTARGET}/" /var/bitcoin/wallets)

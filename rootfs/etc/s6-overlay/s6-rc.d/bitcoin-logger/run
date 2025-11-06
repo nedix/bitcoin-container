@@ -1,0 +1,3 @@
+#!/usr/bin/env execlineb
+
+exec s6-log -bp 1 n1 s65536 /var/log/bitcoin
