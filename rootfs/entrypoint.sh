@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 
-: ${BLOCKSDIR:="/var/bitcoin/blocks/"}
+: ${BLOCKSDIR}
 : ${CHAIN:="main"}
 : ${CONF:="/etc/bitcoin/bitcoin.conf"}
 : ${CONNECT}
-: ${DATADIR:="/var/bitcoin/data/"}
+: ${DATADIR}
 : ${DBCACHE}
+: ${DEBUG}
 : ${DISABLEWALLET}
 : ${DISCOVER}
 : ${DNSSEED}
@@ -19,48 +20,49 @@
 : ${TXINDEX}
 : ${UPNP}
 : ${WALLETBROADCAST}
-: ${WALLETDIR:="/var/bitcoin/wallets/"}
+: ${WALLETDIR}
 : ${WHITELIST}
-
-mkdir -p \
-    "$BLOCKSDIR" \
-    "$DATADIR" \
-    "$WALLETDIR" \
-    "/var/log/bitcoin"
-
-chown nobody:nogroup \
-    "/var/log/bitcoin"
 
 # -------------------------------------------------------------------------------
 #    Bootstrap bitcoin services
 # -------------------------------------------------------------------------------
 {
     # -------------------------------------------------------------------------------
-    #    Create bitcoin environment
+    #    Create bitcoin-daemon environment
     # -------------------------------------------------------------------------------
-    mkdir -p /run/bitcoin/environment
+    mkdir -p /run/bitcoin-daemon/environment/
 
-    echo "$BLOCKSDIR"       > /run/bitcoin/environment/BLOCKSDIR
-    echo "$CONF"            > /run/bitcoin/environment/CONF
-    echo "$CHAIN"           > /run/bitcoin/environment/CHAIN
-    echo "$CONNECT"         > /run/bitcoin/environment/CONNECT
-    echo "$DATADIR"         > /run/bitcoin/environment/DATADIR
-    echo "$DBCACHE"         > /run/bitcoin/environment/DBCACHE
-    echo "$DISABLEWALLET"   > /run/bitcoin/environment/DISABLEWALLET
-    echo "$DISCOVER"        > /run/bitcoin/environment/DISCOVER
-    echo "$DNSSEED"         > /run/bitcoin/environment/DNSSEED
-    echo "$LISTEN"          > /run/bitcoin/environment/LISTEN
-    echo "$MAXCONNECTIONS"  > /run/bitcoin/environment/MAXCONNECTIONS
-    echo "$PRUNE"           > /run/bitcoin/environment/PRUNE
-    echo "$RPCALLOWIP"      > /run/bitcoin/environment/RPCALLOWIP
-    echo "$RPCPASSWORD"     > /run/bitcoin/environment/RPCPASSWORD
-    echo "$RPCTHREADS"      > /run/bitcoin/environment/RPCTHREADS
-    echo "$RPCUSER"         > /run/bitcoin/environment/RPCUSER
-    echo "$TXINDEX"         > /run/bitcoin/environment/TXINDEX
-    echo "$UPNP"            > /run/bitcoin/environment/UPNP
-    echo "$WALLETBROADCAST" > /run/bitcoin/environment/WALLETBROADCAST
-    echo "$WALLETDIR"       > /run/bitcoin/environment/WALLETDIR
-    echo "$WHITELIST"       > /run/bitcoin/environment/WHITELIST
+    echo "$BLOCKSDIR"       > /run/bitcoin-daemon/environment/BLOCKSDIR
+    echo "$CHAIN"           > /run/bitcoin-daemon/environment/CHAIN
+    echo "$CONF"            > /run/bitcoin-daemon/environment/CONF
+    echo "$CONNECT"         > /run/bitcoin-daemon/environment/CONNECT
+    echo "$DATADIR"         > /run/bitcoin-daemon/environment/DATADIR
+    echo "$DBCACHE"         > /run/bitcoin-daemon/environment/DBCACHE
+    echo "$DEBUG"           > /run/bitcoin-daemon/environment/DEBUG
+    echo "$DISABLEWALLET"   > /run/bitcoin-daemon/environment/DISABLEWALLET
+    echo "$DISCOVER"        > /run/bitcoin-daemon/environment/DISCOVER
+    echo "$DNSSEED"         > /run/bitcoin-daemon/environment/DNSSEED
+    echo "$LISTEN"          > /run/bitcoin-daemon/environment/LISTEN
+    echo "$MAXCONNECTIONS"  > /run/bitcoin-daemon/environment/MAXCONNECTIONS
+    echo "$PRUNE"           > /run/bitcoin-daemon/environment/PRUNE
+    echo "$RPCALLOWIP"      > /run/bitcoin-daemon/environment/RPCALLOWIP
+    echo "$RPCPASSWORD"     > /run/bitcoin-daemon/environment/RPCPASSWORD
+    echo "$RPCTHREADS"      > /run/bitcoin-daemon/environment/RPCTHREADS
+    echo "$RPCUSER"         > /run/bitcoin-daemon/environment/RPCUSER
+    echo "$TXINDEX"         > /run/bitcoin-daemon/environment/TXINDEX
+    echo "$UPNP"            > /run/bitcoin-daemon/environment/UPNP
+    echo "$WALLETBROADCAST" > /run/bitcoin-daemon/environment/WALLETBROADCAST
+    echo "$WALLETDIR"       > /run/bitcoin-daemon/environment/WALLETDIR
+    echo "$WHITELIST"       > /run/bitcoin-daemon/environment/WHITELIST
+
+    # -------------------------------------------------------------------------------
+    #    Create bitcoin-setup environment
+    # -------------------------------------------------------------------------------
+    mkdir -p /run/bitcoin-setup/environment/
+
+    echo "$BLOCKSDIR" > /run/bitcoin-setup/environment/BLOCKSDIR
+    echo "$DATADIR"   > /run/bitcoin-setup/environment/DATADIR
+    echo "$WALLETDIR" > /run/bitcoin-setup/environment/WALLETDIR
 }
 
 # -------------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 : ${CONNECT}
 : ${DATADIR}
 : ${DBCACHE}
+: ${DEBUG}
 : ${DISABLEWALLET}
 : ${DISCOVER}
 : ${DNSSEED}
@@ -29,6 +30,7 @@ ARGS="$ARGS \
     --chain=${CHAIN} \
     --conf=${CONF} \
     --datadir=${DATADIR} \
+    --debug=${DEBUG} \
     --printtoconsole=${PRINTTOCONSOLE} \
     --rpcallowip=${RPCALLOWIP} \
     --walletdir=${WALLETDIR} \
@@ -37,59 +39,63 @@ ARGS="$ARGS \
 "
 
 if [ ! -z "$CONNECT" ]; then
-    ARGS="$ARGS\n--connect=${CONNECT}"
+    ARGS="$ARGS --connect=${CONNECT}"
+fi
+
+if [ ! -z "$DEBUG" ]; then
+    ARGS="$ARGS --debug=${DEBUG}"
 fi
 
 if [ ! -z "$DISABLEWALLET" ]; then
-    ARGS="$ARGS\n--disablewallet=${DISABLEWALLET}"
+    ARGS="$ARGS --disablewallet=${DISABLEWALLET}"
 fi
 
 if [ ! -z "$DISCOVER" ]; then
-    ARGS="$ARGS\n--discover=${DISCOVER}"
+    ARGS="$ARGS --discover=${DISCOVER}"
 fi
 
 if [ ! -z "$DNSSEED" ]; then
-    ARGS="$ARGS\n--dnsseed=${DNSSEED}"
+    ARGS="$ARGS --dnsseed=${DNSSEED}"
 fi
 
 if [ ! -z "$LISTEN" ]; then
-    ARGS="$ARGS\n--listen=${LISTEN}"
+    ARGS="$ARGS --listen=${LISTEN}"
 fi
 
 if [ ! -z "$MAXCONNECTIONS" ]; then
-    ARGS="$ARGS\n--maxconnections=${MAXCONNECTIONS}"
+    ARGS="$ARGS --maxconnections=${MAXCONNECTIONS}"
 fi
 
 if [ ! -z "$PRUNE" ]; then
-    ARGS="$ARGS\n--prune=${PRUNE}"
+    ARGS="$ARGS --prune=${PRUNE}"
 fi
 
 if [ ! -z "$RPCPASSWORD" ]; then
-    ARGS="$ARGS\n--rpcpassword=${RPCPASSWORD}"
+    ARGS="$ARGS --rpcpassword=${RPCPASSWORD}"
 fi
 
 if [ ! -z "$RPCTHREADS" ]; then
-    ARGS="$ARGS\n--rpcthreads=${RPCTHREADS}"
+    ARGS="$ARGS --rpcthreads=${RPCTHREADS}"
 fi
 
 if [ ! -z "$RPCUSER" ]; then
-    ARGS="$ARGS\n--rpcuser=${RPCUSER}"
+    ARGS="$ARGS --rpcuser=${RPCUSER}"
 fi
 
 if [ ! -z "$TXINDEX" ]; then
-    ARGS="$ARGS\n--txindex=${TXINDEX}"
+    ARGS="$ARGS --txindex=${TXINDEX}"
 fi
 
 if [ ! -z "$UPNP" ]; then
-    ARGS="$ARGS\n--upnp=${UPNP}"
+    ARGS="$ARGS --upnp=${UPNP}"
 fi
 
 if [ ! -z "$WALLETBROADCAST" ]; then
-    ARGS="$ARGS\n--walletbroadcast=${WALLETBROADCAST}"
+    ARGS="$ARGS --walletbroadcast=${WALLETBROADCAST}"
 fi
 
 if [ ! -z "$WHITELIST" ]; then
-    ARGS="$ARGS\n--whitelist=${WHITELIST}"
+    ARGS="$ARGS --whitelist=${WHITELIST}"
 fi
 
 if echo "$(cat /var/log/bitcoin/current && cat /var/log/bitcoin/*.s 2> /dev/null)" | grep -q \
