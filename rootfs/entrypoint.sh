@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
-: ${BLOCKSDIR}
+: ${BLOCKSDIR:="/mnt/storage/blocks/"}
 : ${CHAIN:="main"}
 : ${CONF:="/etc/bitcoin/bitcoin.conf"}
 : ${CONNECT}
-: ${DATADIR}
+: ${DATADIR:="/mnt/storage/data/"}
 : ${DBCACHE}
 : ${DEBUG}
 : ${DISABLEWALLET}
@@ -20,7 +20,7 @@
 : ${TXINDEX}
 : ${UPNP}
 : ${WALLETBROADCAST}
-: ${WALLETDIR}
+: ${WALLETDIR:="/mnt/storage/wallets/"}
 : ${WHITELIST}
 
 # -------------------------------------------------------------------------------

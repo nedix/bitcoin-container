@@ -93,10 +93,6 @@ COPY --link --from=bitcoin /build/bitcoin/output/bin/bitcoin*  /usr/local/bin/
 
 COPY /rootfs/ /
 
-ENV BLOCKSDIR="/mnt/storage/blocks/"
-ENV DATADIR="/mnt/storage/data/"
-ENV WALLETDIR="/mnt/storage/wallets/"
-
 ENTRYPOINT ["/entrypoint.sh"]
 
 # REST
