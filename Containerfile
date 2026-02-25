@@ -32,6 +32,7 @@ ARG QUIX_SIGS_VERSION
 RUN apk add \
         boost-dev \
         build-base \
+        capnproto-dev \
         chrpath \
         cmake \
         file \
