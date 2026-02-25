@@ -74,7 +74,6 @@ RUN export CFLAGS="-O2 -g1" CPPFLAGS="-O2 -g1" CXXFLAGS="-O2 -g1" \
         -DINSTALL_MAN="OFF" \
         -DREDUCE_EXPORTS="ON" \
         -DWITH_CCACHE="OFF" \
-        -DWITH_SQLITE="ON" \
     && cmake \
         --build output \
         -j $(( $(nproc) + 1 )) \
