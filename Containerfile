@@ -1,5 +1,5 @@
 ARG ALPINE_VERSION=3.23
-ARG BITCOIN_VERSION=29.3
+ARG BITCOIN_VERSION=30.2
 ARG QUIX_SIGS_VERSION=0d4e00a665d0dab50867dd22f552c32d23b66d0e
 ARG S6_OVERLAY_VERSION=3.2.2.0
 
@@ -32,6 +32,7 @@ ARG QUIX_SIGS_VERSION
 RUN apk add \
         boost-dev \
         build-base \
+        capnproto-dev \
         chrpath \
         cmake \
         file \
@@ -73,7 +74,6 @@ RUN export CFLAGS="-O2 -g1" CPPFLAGS="-O2 -g1" CXXFLAGS="-O2 -g1" \
         -DINSTALL_MAN="OFF" \
         -DREDUCE_EXPORTS="ON" \
         -DWITH_CCACHE="OFF" \
-        -DWITH_SQLITE="ON" \
     && cmake \
         --build output \
         -j $(( $(nproc) + 1 )) \

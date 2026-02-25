@@ -22,7 +22,7 @@ while [ -z "$DATADIRTARGET" ]; do
     sleep 1
 done
 
-WALLETDIRTARGET="${WALLETDIR%/*}"
+WALLETDIRTARGET="$WALLETDIR"
 
 (cd / && ln -s "${BLOCKSDIRTARGET}/" /var/bitcoin/blocks)
 (cd / && ln -s "${DATADIRTARGET}/" /var/bitcoin/data)

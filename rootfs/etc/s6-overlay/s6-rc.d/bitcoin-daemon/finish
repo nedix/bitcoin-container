@@ -15,7 +15,7 @@ if echo "$LOGLINES" | grep -q \
     )
 
     FAILEDFILES=$( \
-        ls /var/bitcoin/blocks/blk*.dat /var/bitcoin/blocks/rev*.dat 2>/dev/null \
+        ls /var/bitcoin/blocks/blk*.dat /var/bitcoin/blocks/rev*.dat 2> /dev/null \
             | sed -E "s/.*(blk|rev)([0-9]+)\.dat/\2 &/" \
             | awk -v n="$FAILEDFILE" '$1 >= n' \
             | sort -n \
