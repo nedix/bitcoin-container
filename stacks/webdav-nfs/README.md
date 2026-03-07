@@ -15,5 +15,5 @@ test -e .env || cp .env.example .env && nano .env
 ## 3. Run stack
 
 ```shell
-make setup && make down && make up
+make setup && make down; make up
 ```
