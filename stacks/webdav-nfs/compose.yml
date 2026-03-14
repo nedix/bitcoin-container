@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     volumes:
-      - webdav-nfs:/mnt/storage/
+      - webdav-nfs:/data/
     depends_on:
       webdav-nfs:
         condition: service_healthy
