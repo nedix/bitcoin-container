@@ -50,7 +50,7 @@ WORKDIR /tmp/guix.sigs/
 RUN git init "$PWD" \
     && git remote add -f origin -t \* https://github.com/bitcoin-core/guix.sigs \
     && git checkout "$QUIX_SIGS_VERSION" \
-    && gpg --import ./builder-keys/* \
+    && (for i in 1 2 3; do gpg --import ./builder-keys/* && exit 0; done; exit 1) \
     && rm -rf "$PWD"
 
 WORKDIR /build/bitcoin/
